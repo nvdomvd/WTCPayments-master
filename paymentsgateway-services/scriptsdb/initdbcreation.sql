@@ -1,0 +1,2 @@
+CREATE DATABASE [WBCPayments] 
+GO

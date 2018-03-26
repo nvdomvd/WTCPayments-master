@@ -1,0 +1,740 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="wbPaymentsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="client_id" />
+          </Key>
+          <Property Name="client_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="client_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClientPassword">
+          <Key>
+            <PropertyRef Name="client_id" />
+            <PropertyRef Name="date_created" />
+          </Key>
+          <Property Name="client_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="date_created" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClientRole">
+          <Key>
+            <PropertyRef Name="client_id" />
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="client_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="role_id" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Currency">
+          <Key>
+            <PropertyRef Name="currency_id" />
+          </Key>
+          <Property Name="currency_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="currency_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Gateway">
+          <Key>
+            <PropertyRef Name="gateway_id" />
+          </Key>
+          <Property Name="gateway_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="gateway_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GatewayPaymentData">
+          <Key>
+            <PropertyRef Name="payment_id" />
+          </Key>
+          <Property Name="payment_id" Type="int" Nullable="false" />
+          <Property Name="gateway_reference" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="gateway_response" Type="varchar" MaxLength="2000" Nullable="false" />
+          <Property Name="date_created" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="invoice_id" />
+          </Key>
+          <Property Name="invoice_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="invoice_number" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="date_created" Type="datetime" Nullable="false" />
+          <Property Name="client_id" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Operation">
+          <Key>
+            <PropertyRef Name="operation_id" />
+          </Key>
+          <Property Name="operation_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="operation_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="payment_id" />
+          </Key>
+          <Property Name="payment_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="client_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="invoice_id" Type="int" Nullable="false" />
+          <Property Name="amount" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="currency_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="date_created" Type="datetime" Nullable="false" />
+          <Property Name="gateway_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="payment_status_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentStatus">
+          <Key>
+            <PropertyRef Name="payment_status_id" />
+          </Key>
+          <Property Name="payment_status_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="payment_status_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="role_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoleOperation">
+          <Key>
+            <PropertyRef Name="role_id" />
+            <PropertyRef Name="operation_id" />
+          </Key>
+          <Property Name="role_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="operation_id" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Settings">
+          <Key>
+            <PropertyRef Name="setting_id" />
+          </Key>
+          <Property Name="setting_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="value" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="Client_ClientPassword_FK1">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ClientPassword" Type="Self.ClientPassword" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="client_id" />
+            </Principal>
+            <Dependent Role="ClientPassword">
+              <PropertyRef Name="client_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Client_ClientRole_FK1">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ClientRole" Type="Self.ClientRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="client_id" />
+            </Principal>
+            <Dependent Role="ClientRole">
+              <PropertyRef Name="client_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Client_Invoice_FK1">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="client_id" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="client_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Client_Payment_FK1">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="client_id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="client_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Currency_Payment_FK1">
+          <End Role="Currency" Type="Self.Currency" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="currency_id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="currency_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Gateway_Payment_FK1">
+          <End Role="Gateway" Type="Self.Gateway" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gateway">
+              <PropertyRef Name="gateway_id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="gateway_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Invoice_Payment_FK1">
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoice">
+              <PropertyRef Name="invoice_id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="invoice_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Operation_RoleOperation_FK1">
+          <End Role="Operation" Type="Self.Operation" Multiplicity="1" />
+          <End Role="RoleOperation" Type="Self.RoleOperation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Operation">
+              <PropertyRef Name="operation_id" />
+            </Principal>
+            <Dependent Role="RoleOperation">
+              <PropertyRef Name="operation_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Payment_GatewayPaymentData_FK1">
+          <End Role="Payment" Type="Self.Payment" Multiplicity="1" />
+          <End Role="GatewayPaymentData" Type="Self.GatewayPaymentData" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="payment_id" />
+            </Principal>
+            <Dependent Role="GatewayPaymentData">
+              <PropertyRef Name="payment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PaymentStatus_Payment_FK1">
+          <End Role="PaymentStatus" Type="Self.PaymentStatus" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentStatus">
+              <PropertyRef Name="payment_status_id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="payment_status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Role_ClientRole_FK1">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="ClientRole" Type="Self.ClientRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="role_id" />
+            </Principal>
+            <Dependent Role="ClientRole">
+              <PropertyRef Name="role_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Role_RoleOperation_FK1">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="RoleOperation" Type="Self.RoleOperation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="role_id" />
+            </Principal>
+            <Dependent Role="RoleOperation">
+              <PropertyRef Name="role_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="wbPaymentsModelStoreContainer">
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientPassword" EntityType="Self.ClientPassword" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientRole" EntityType="Self.ClientRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Currency" EntityType="Self.Currency" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Gateway" EntityType="Self.Gateway" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GatewayPaymentData" EntityType="Self.GatewayPaymentData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Invoice" EntityType="Self.Invoice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Operation" EntityType="Self.Operation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentStatus" EntityType="Self.PaymentStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleOperation" EntityType="Self.RoleOperation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Client_ClientPassword_FK1" Association="Self.Client_ClientPassword_FK1">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="ClientPassword" EntitySet="ClientPassword" />
+          </AssociationSet>
+          <AssociationSet Name="Client_ClientRole_FK1" Association="Self.Client_ClientRole_FK1">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="ClientRole" EntitySet="ClientRole" />
+          </AssociationSet>
+          <AssociationSet Name="Client_Invoice_FK1" Association="Self.Client_Invoice_FK1">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="Client_Payment_FK1" Association="Self.Client_Payment_FK1">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="Currency_Payment_FK1" Association="Self.Currency_Payment_FK1">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="Gateway_Payment_FK1" Association="Self.Gateway_Payment_FK1">
+            <End Role="Gateway" EntitySet="Gateway" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="Invoice_Payment_FK1" Association="Self.Invoice_Payment_FK1">
+            <End Role="Invoice" EntitySet="Invoice" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="Operation_RoleOperation_FK1" Association="Self.Operation_RoleOperation_FK1">
+            <End Role="Operation" EntitySet="Operation" />
+            <End Role="RoleOperation" EntitySet="RoleOperation" />
+          </AssociationSet>
+          <AssociationSet Name="Payment_GatewayPaymentData_FK1" Association="Self.Payment_GatewayPaymentData_FK1">
+            <End Role="Payment" EntitySet="Payment" />
+            <End Role="GatewayPaymentData" EntitySet="GatewayPaymentData" />
+          </AssociationSet>
+          <AssociationSet Name="PaymentStatus_Payment_FK1" Association="Self.PaymentStatus_Payment_FK1">
+            <End Role="PaymentStatus" EntitySet="PaymentStatus" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="Role_ClientRole_FK1" Association="Self.Role_ClientRole_FK1">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="ClientRole" EntitySet="ClientRole" />
+          </AssociationSet>
+          <AssociationSet Name="Role_RoleOperation_FK1" Association="Self.Role_RoleOperation_FK1">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RoleOperation" EntitySet="RoleOperation" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="wbPaymentsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="wbpaymentsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Client" EntityType="wbPaymentsModel.Client" />
+          <EntitySet Name="ClientPassword" EntityType="wbPaymentsModel.ClientPassword" />
+          <EntitySet Name="Currency" EntityType="wbPaymentsModel.Currency" />
+          <EntitySet Name="Gateway" EntityType="wbPaymentsModel.Gateway" />
+          <EntitySet Name="GatewayPaymentData" EntityType="wbPaymentsModel.GatewayPaymentData" />
+          <EntitySet Name="Invoice" EntityType="wbPaymentsModel.Invoice" />
+          <EntitySet Name="Operation" EntityType="wbPaymentsModel.Operation" />
+          <EntitySet Name="Payment" EntityType="wbPaymentsModel.Payment" />
+          <EntitySet Name="PaymentStatus" EntityType="wbPaymentsModel.PaymentStatus" />
+          <EntitySet Name="Role" EntityType="wbPaymentsModel.Role" />
+          <EntitySet Name="Settings" EntityType="wbPaymentsModel.Settings" />
+          <AssociationSet Name="Client_ClientPassword_FK1" Association="wbPaymentsModel.Client_ClientPassword_FK1">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="ClientPassword" EntitySet="ClientPassword" />
+          </AssociationSet>
+          <AssociationSet Name="Client_Invoice_FK1" Association="wbPaymentsModel.Client_Invoice_FK1">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="Client_Payment_FK1" Association="wbPaymentsModel.Client_Payment_FK1">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="Currency_Payment_FK1" Association="wbPaymentsModel.Currency_Payment_FK1">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="Gateway_Payment_FK1" Association="wbPaymentsModel.Gateway_Payment_FK1">
+            <End Role="Gateway" EntitySet="Gateway" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="Payment_GatewayPaymentData_FK1" Association="wbPaymentsModel.Payment_GatewayPaymentData_FK1">
+            <End Role="Payment" EntitySet="Payment" />
+            <End Role="GatewayPaymentData" EntitySet="GatewayPaymentData" />
+          </AssociationSet>
+          <AssociationSet Name="Invoice_Payment_FK1" Association="wbPaymentsModel.Invoice_Payment_FK1">
+            <End Role="Invoice" EntitySet="Invoice" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="PaymentStatus_Payment_FK1" Association="wbPaymentsModel.PaymentStatus_Payment_FK1">
+            <End Role="PaymentStatus" EntitySet="PaymentStatus" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="ClientRole" Association="wbPaymentsModel.ClientRole">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Role" EntitySet="Role" />
+          </AssociationSet>
+          <AssociationSet Name="RoleOperation" Association="wbPaymentsModel.RoleOperation">
+            <End Role="Operation" EntitySet="Operation" />
+            <End Role="Role" EntitySet="Role" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="client_id" />
+          </Key>
+          <Property Name="client_id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="client_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ClientPassword" Relationship="wbPaymentsModel.Client_ClientPassword_FK1" FromRole="Client" ToRole="ClientPassword" />
+          <NavigationProperty Name="Invoice" Relationship="wbPaymentsModel.Client_Invoice_FK1" FromRole="Client" ToRole="Invoice" />
+          <NavigationProperty Name="Payment" Relationship="wbPaymentsModel.Client_Payment_FK1" FromRole="Client" ToRole="Payment" />
+          <NavigationProperty Name="Role" Relationship="wbPaymentsModel.ClientRole" FromRole="Client" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="ClientPassword">
+          <Key>
+            <PropertyRef Name="client_id" />
+            <PropertyRef Name="date_created" />
+          </Key>
+          <Property Name="client_id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="date_created" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Client" Relationship="wbPaymentsModel.Client_ClientPassword_FK1" FromRole="ClientPassword" ToRole="Client" />
+        </EntityType>
+        <EntityType Name="Currency">
+          <Key>
+            <PropertyRef Name="currency_id" />
+          </Key>
+          <Property Name="currency_id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="currency_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Payment" Relationship="wbPaymentsModel.Currency_Payment_FK1" FromRole="Currency" ToRole="Payment" />
+        </EntityType>
+        <EntityType Name="Gateway">
+          <Key>
+            <PropertyRef Name="gateway_id" />
+          </Key>
+          <Property Name="gateway_id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="gateway_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Payment" Relationship="wbPaymentsModel.Gateway_Payment_FK1" FromRole="Gateway" ToRole="Payment" />
+        </EntityType>
+        <EntityType Name="GatewayPaymentData">
+          <Key>
+            <PropertyRef Name="payment_id" />
+          </Key>
+          <Property Name="payment_id" Type="Int32" Nullable="false" />
+          <Property Name="gateway_reference" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="gateway_response" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="date_created" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Payment" Relationship="wbPaymentsModel.Payment_GatewayPaymentData_FK1" FromRole="GatewayPaymentData" ToRole="Payment" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="invoice_id" />
+          </Key>
+          <Property Name="invoice_id" Type="Int32" Nullable="false" />
+          <Property Name="invoice_number" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="date_created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="client_id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Client" Relationship="wbPaymentsModel.Client_Invoice_FK1" FromRole="Invoice" ToRole="Client" />
+          <NavigationProperty Name="Payment" Relationship="wbPaymentsModel.Invoice_Payment_FK1" FromRole="Invoice" ToRole="Payment" />
+        </EntityType>
+        <EntityType Name="Operation">
+          <Key>
+            <PropertyRef Name="operation_id" />
+          </Key>
+          <Property Name="operation_id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="operation_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Role" Relationship="wbPaymentsModel.RoleOperation" FromRole="Operation" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="payment_id" />
+          </Key>
+          <Property Name="payment_id" Type="Int32" Nullable="false" />
+          <Property Name="client_id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="invoice_id" Type="Int32" Nullable="false" />
+          <Property Name="amount" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="currency_id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="date_created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="gateway_id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="payment_status_id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Client" Relationship="wbPaymentsModel.Client_Payment_FK1" FromRole="Payment" ToRole="Client" />
+          <NavigationProperty Name="Currency" Relationship="wbPaymentsModel.Currency_Payment_FK1" FromRole="Payment" ToRole="Currency" />
+          <NavigationProperty Name="Gateway" Relationship="wbPaymentsModel.Gateway_Payment_FK1" FromRole="Payment" ToRole="Gateway" />
+          <NavigationProperty Name="GatewayPaymentData" Relationship="wbPaymentsModel.Payment_GatewayPaymentData_FK1" FromRole="Payment" ToRole="GatewayPaymentData" />
+          <NavigationProperty Name="Invoice" Relationship="wbPaymentsModel.Invoice_Payment_FK1" FromRole="Payment" ToRole="Invoice" />
+          <NavigationProperty Name="PaymentStatus" Relationship="wbPaymentsModel.PaymentStatus_Payment_FK1" FromRole="Payment" ToRole="PaymentStatus" />
+        </EntityType>
+        <EntityType Name="PaymentStatus">
+          <Key>
+            <PropertyRef Name="payment_status_id" />
+          </Key>
+          <Property Name="payment_status_id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="payment_status_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Payment" Relationship="wbPaymentsModel.PaymentStatus_Payment_FK1" FromRole="PaymentStatus" ToRole="Payment" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="role_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Client" Relationship="wbPaymentsModel.ClientRole" FromRole="Role" ToRole="Client" />
+          <NavigationProperty Name="Operation" Relationship="wbPaymentsModel.RoleOperation" FromRole="Role" ToRole="Operation" />
+        </EntityType>
+        <EntityType Name="Settings">
+          <Key>
+            <PropertyRef Name="setting_id" />
+          </Key>
+          <Property Name="setting_id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="value" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="Client_ClientPassword_FK1">
+          <End Type="wbPaymentsModel.Client" Role="Client" Multiplicity="1" />
+          <End Type="wbPaymentsModel.ClientPassword" Role="ClientPassword" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="client_id" />
+            </Principal>
+            <Dependent Role="ClientPassword">
+              <PropertyRef Name="client_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Client_Invoice_FK1">
+          <End Type="wbPaymentsModel.Client" Role="Client" Multiplicity="1" />
+          <End Type="wbPaymentsModel.Invoice" Role="Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="client_id" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="client_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Client_Payment_FK1">
+          <End Type="wbPaymentsModel.Client" Role="Client" Multiplicity="1" />
+          <End Type="wbPaymentsModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="client_id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="client_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Currency_Payment_FK1">
+          <End Type="wbPaymentsModel.Currency" Role="Currency" Multiplicity="1" />
+          <End Type="wbPaymentsModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="currency_id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="currency_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Gateway_Payment_FK1">
+          <End Type="wbPaymentsModel.Gateway" Role="Gateway" Multiplicity="1" />
+          <End Type="wbPaymentsModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gateway">
+              <PropertyRef Name="gateway_id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="gateway_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Payment_GatewayPaymentData_FK1">
+          <End Type="wbPaymentsModel.Payment" Role="Payment" Multiplicity="1" />
+          <End Type="wbPaymentsModel.GatewayPaymentData" Role="GatewayPaymentData" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="payment_id" />
+            </Principal>
+            <Dependent Role="GatewayPaymentData">
+              <PropertyRef Name="payment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Invoice_Payment_FK1">
+          <End Type="wbPaymentsModel.Invoice" Role="Invoice" Multiplicity="1" />
+          <End Type="wbPaymentsModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoice">
+              <PropertyRef Name="invoice_id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="invoice_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PaymentStatus_Payment_FK1">
+          <End Type="wbPaymentsModel.PaymentStatus" Role="PaymentStatus" Multiplicity="1" />
+          <End Type="wbPaymentsModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentStatus">
+              <PropertyRef Name="payment_status_id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="payment_status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ClientRole">
+          <End Type="wbPaymentsModel.Client" Role="Client" Multiplicity="*" />
+          <End Type="wbPaymentsModel.Role" Role="Role" Multiplicity="*" />
+        </Association>
+        <Association Name="RoleOperation">
+          <End Type="wbPaymentsModel.Operation" Role="Operation" Multiplicity="*" />
+          <End Type="wbPaymentsModel.Role" Role="Role" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="wbPaymentsModelStoreContainer" CdmEntityContainer="wbpaymentsEntities">
+          <EntitySetMapping Name="Client">
+            <EntityTypeMapping TypeName="wbPaymentsModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="client_name" ColumnName="client_name" />
+                <ScalarProperty Name="client_id" ColumnName="client_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientPassword">
+            <EntityTypeMapping TypeName="wbPaymentsModel.ClientPassword">
+              <MappingFragment StoreEntitySet="ClientPassword">
+                <ScalarProperty Name="date_created" ColumnName="date_created" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="client_id" ColumnName="client_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Currency">
+            <EntityTypeMapping TypeName="wbPaymentsModel.Currency">
+              <MappingFragment StoreEntitySet="Currency">
+                <ScalarProperty Name="currency_name" ColumnName="currency_name" />
+                <ScalarProperty Name="currency_id" ColumnName="currency_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Gateway">
+            <EntityTypeMapping TypeName="wbPaymentsModel.Gateway">
+              <MappingFragment StoreEntitySet="Gateway">
+                <ScalarProperty Name="gateway_name" ColumnName="gateway_name" />
+                <ScalarProperty Name="gateway_id" ColumnName="gateway_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GatewayPaymentData">
+            <EntityTypeMapping TypeName="wbPaymentsModel.GatewayPaymentData">
+              <MappingFragment StoreEntitySet="GatewayPaymentData">
+                <ScalarProperty Name="date_created" ColumnName="date_created" />
+                <ScalarProperty Name="gateway_response" ColumnName="gateway_response" />
+                <ScalarProperty Name="gateway_reference" ColumnName="gateway_reference" />
+                <ScalarProperty Name="payment_id" ColumnName="payment_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Invoice">
+            <EntityTypeMapping TypeName="wbPaymentsModel.Invoice">
+              <MappingFragment StoreEntitySet="Invoice">
+                <ScalarProperty Name="client_id" ColumnName="client_id" />
+                <ScalarProperty Name="date_created" ColumnName="date_created" />
+                <ScalarProperty Name="invoice_number" ColumnName="invoice_number" />
+                <ScalarProperty Name="invoice_id" ColumnName="invoice_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Operation">
+            <EntityTypeMapping TypeName="wbPaymentsModel.Operation">
+              <MappingFragment StoreEntitySet="Operation">
+                <ScalarProperty Name="operation_name" ColumnName="operation_name" />
+                <ScalarProperty Name="operation_id" ColumnName="operation_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payment">
+            <EntityTypeMapping TypeName="wbPaymentsModel.Payment">
+              <MappingFragment StoreEntitySet="Payment">
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="payment_status_id" ColumnName="payment_status_id" />
+                <ScalarProperty Name="gateway_id" ColumnName="gateway_id" />
+                <ScalarProperty Name="date_created" ColumnName="date_created" />
+                <ScalarProperty Name="currency_id" ColumnName="currency_id" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="invoice_id" ColumnName="invoice_id" />
+                <ScalarProperty Name="client_id" ColumnName="client_id" />
+                <ScalarProperty Name="payment_id" ColumnName="payment_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentStatus">
+            <EntityTypeMapping TypeName="wbPaymentsModel.PaymentStatus">
+              <MappingFragment StoreEntitySet="PaymentStatus">
+                <ScalarProperty Name="payment_status_name" ColumnName="payment_status_name" />
+                <ScalarProperty Name="payment_status_id" ColumnName="payment_status_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="wbPaymentsModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="role_name" ColumnName="role_name" />
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Settings">
+            <EntityTypeMapping TypeName="wbPaymentsModel.Settings">
+              <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="value" ColumnName="value" />
+                <ScalarProperty Name="setting_id" ColumnName="setting_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ClientRole" TypeName="wbPaymentsModel.ClientRole" StoreEntitySet="ClientRole">
+            <EndProperty Name="Role">
+              <ScalarProperty Name="role_id" ColumnName="role_id" />
+            </EndProperty>
+            <EndProperty Name="Client">
+              <ScalarProperty Name="client_id" ColumnName="client_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RoleOperation" TypeName="wbPaymentsModel.RoleOperation" StoreEntitySet="RoleOperation">
+            <EndProperty Name="Role">
+              <ScalarProperty Name="role_id" ColumnName="role_id" />
+            </EndProperty>
+            <EndProperty Name="Operation">
+              <ScalarProperty Name="operation_id" ColumnName="operation_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

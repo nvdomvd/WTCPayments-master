@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WBPayments_Logic.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="errorMessageMisingInfo" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Some info is missing</Value>
+    </Setting>
+    <Setting Name="errorMessageMisingData" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Some of the dictionary id are not in the db</Value>
+    </Setting>
+    <Setting Name="errorMessagePaymentNotFound" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">The payment received is not in the db</Value>
+    </Setting>
+    <Setting Name="errorMessageUnchangebleStatus" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">The status of the payment received can not be changed</Value>
+    </Setting>
+    <Setting Name="warnFieldsNotValid" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Some of the fields where not valid.</Value>
+    </Setting>
+    <Setting Name="errorMessageInternalError" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Internal error while processing your request</Value>
+    </Setting>
+    <Setting Name="errorMessageMaxPaymentsReached" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Have reach the max payments allowed per invoice.</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6feb1b2271fe43e795f733af56b55bfa" Name="Diagram1">
+        <EntityTypeShape EntityType="wbPaymentsModel.Client" Width="1.5" PointX="0.75" PointY="4.625" />
+        <EntityTypeShape EntityType="wbPaymentsModel.ClientPassword" Width="1.5" PointX="3" PointY="3.375" />
+        <EntityTypeShape EntityType="wbPaymentsModel.Currency" Width="1.5" PointX="3" PointY="16.25" />
+        <EntityTypeShape EntityType="wbPaymentsModel.Gateway" Width="1.5" PointX="3" PointY="11.5" />
+        <EntityTypeShape EntityType="wbPaymentsModel.GatewayPaymentData" Width="1.5" PointX="7.5" PointY="8.625" />
+        <EntityTypeShape EntityType="wbPaymentsModel.Invoice" Width="1.5" PointX="3" PointY="8.5" />
+        <EntityTypeShape EntityType="wbPaymentsModel.Operation" Width="1.5" PointX="3.75" PointY="1" />
+        <EntityTypeShape EntityType="wbPaymentsModel.Payment" Width="1.5" PointX="5.25" PointY="7.75" />
+        <EntityTypeShape EntityType="wbPaymentsModel.PaymentStatus" Width="1.5" PointX="3" PointY="13.875" />
+        <EntityTypeShape EntityType="wbPaymentsModel.Role" Width="1.5" PointX="6" PointY="4.875" />
+        <EntityTypeShape EntityType="wbPaymentsModel.Settings" Width="1.5" PointX="0.75" PointY="0.75" />
+        <AssociationConnector Association="wbPaymentsModel.Client_ClientPassword_FK1" />
+        <AssociationConnector Association="wbPaymentsModel.Client_Invoice_FK1" />
+        <AssociationConnector Association="wbPaymentsModel.Client_Payment_FK1" />
+        <AssociationConnector Association="wbPaymentsModel.Currency_Payment_FK1" />
+        <AssociationConnector Association="wbPaymentsModel.Gateway_Payment_FK1" />
+        <AssociationConnector Association="wbPaymentsModel.Payment_GatewayPaymentData_FK1" />
+        <AssociationConnector Association="wbPaymentsModel.Invoice_Payment_FK1" />
+        <AssociationConnector Association="wbPaymentsModel.PaymentStatus_Payment_FK1" />
+        <AssociationConnector Association="wbPaymentsModel.ClientRole" />
+        <AssociationConnector Association="wbPaymentsModel.RoleOperation" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,15 @@
+﻿insert into dbo.Operation (operation_id, operation_name) values ('CREATE_PAYMENT', 'Create Payment');
+insert into dbo.Operation (operation_id, operation_name) values ('CONFIRM_PAYMENT', 'Confirm Payment');
+insert into dbo.Role (role_id, role_name) values ('CLIENT_ROLE', 'Client Role');
+insert into dbo.RoleOperation (role_id, operation_id) values ('CLIENT_ROLE', 'CREATE_PAYMENT');
+insert into dbo.RoleOperation (role_id, operation_id) values ('CLIENT_ROLE', 'CONFIRM_PAYMENT');
+insert into dbo.Currency (currency_id, currency_name) values ('USD', 'USA Dollars');
+insert into dbo.PaymentStatus(payment_status_id, payment_status_name) values ('STATUS_NEW', 'Payment to confirm');
+insert into dbo.PaymentStatus(payment_status_id, payment_status_name) values ('STATUS_APPROVED', 'Payment approved');
+insert into dbo.PaymentStatus(payment_status_id, payment_status_name) values ('STATUS_CANCELLED', 'Payment cancelled');
+insert into dbo.PaymentStatus(payment_status_id, payment_status_name) values ('STATUS_DENIED', 'Payment denied');
+insert into dbo.Settings(setting_id, value, description) values ('MAX_PAYMENTS_INVOICE', '1', 'Max payments allowed per invoice');
+insert into dbo.Gateway(gateway_id, gateway_name) values ('GATEWAY_PAYPAL', 'PayPal');
+insert into dbo.Client(client_id, client_name) values ('PAYMENT_API', 'WBPayment API');
+insert into dbo.ClientPassword(client_id, password, date_created) values ('PAYMENT_API', '$2a$10$TxrX6Hg8uzjGmS4QkkZm0eH1Vv5ST3GViRqwXtGYY0pRw/azAdhCK', '2017-11-10');
+insert into dbo.ClientRole(client_id, role_id) values ('PAYMENT_API', 'CLIENT_ROLE');

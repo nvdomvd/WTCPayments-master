@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="WBPayments_Logic.Service_WBPayments_Logic" CodeBehind="Service_WBPayments_Logic.svc.cs" Factory="Ninject.Extensions.Wcf.NinjectServiceHostFactory" %>
