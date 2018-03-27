@@ -27,7 +27,7 @@
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
 
-
+    <script src="js/site.js"></script>
 
 </head>
 <!--script-->
@@ -85,10 +85,11 @@
                 <div class="col-md-8 offset-md-2">
                     <div class="col-md-12">
                         <form id="needs_validation" runat="server" role="form">
+                             <asp:HiddenField runat="server" ID="payment_id" ClientIDMode="Static" />
                             <div class="form-group" >
-                                <label for="invoice-ieference"><%= GetLocalResourceObject("field_invoice_label") %></label>
-                                <input type="text" class="form-control" id="invoice-ieference" required>
-                                <small id="helpBlock-invoice-ieference" class="help-block"></small>
+                                <label for="invoiceIeference"><%= GetLocalResourceObject("field_invoice_label") %></label>
+                                <input type="text" class="form-control" id="invoiceIeference" required runat="server">
+                                <small id="helpBlock-invoiceIeference" class="help-block"></small>
                             </div>
 
                             <label for="amount"><%= GetLocalResourceObject("field_amount_label") %></label>
@@ -101,7 +102,7 @@
                                     <p class="text-center">-</p>
                                 </div>
                                 <div class="col-md-5 col-sm-12 col-12">
-                                    <select class="custom-select w-100 mb-2" id="amount-input-3" required>
+                                    <select class="custom-select w-100 mb-2" id="typeMoney" required >
                                         <option selected value="<%=ConfigurationManager.AppSettings["CurrencyDollarID"]%>"><%= GetLocalResourceObject("field_currency_USD_label") %></option>
                                     </select>
                                 </div>
@@ -112,16 +113,13 @@
                                 <textarea class="form-control" id="comments" rows="3"></textarea>
                                 <small id="helpBlock-comments" class="help-block"></small>
                             </div>
-
-
-                            <%-- <div id="paypal-button-container" class="submit-btn NoWrap rounded-corners clearfix grpelem shared_content text-center mt-3 mb-5" data-content-guid="u260-4_0_content"></div>--%>
                             <label>
-                                <input type="radio" name="payment-option" value="paypal" checked>
+                                <input type="radio" name="payment-option" value="paypal"   checked>
                                 <img src="images/paypal-mark.jpg" alt="Pay with Paypal" style="height: 40px;">
                             </label>
                             <br />
                             <label>
-                                <input type="radio" name="payment-option" value="card">
+                                <input type="radio" name="payment-option" value="card" id="cardOption">
                                 <img src="images/card-mark.png" alt="Accepting Visa, Mastercard, Discover and American Express" style="height: 40px;">
                             </label>
 
@@ -327,11 +325,11 @@
                 validateAmount(true)
             });
 
-            $("#invoice-ieference").blur(function () {
+            $("#invoiceIeference").blur(function () {
                 validateInvoice(false);
             });
 
-            $("#invoice-ieference").keypress(function () {
+            $("#invoiceIeference").keypress(function () {
                 validateInvoice(true);
             });
 
@@ -350,9 +348,9 @@
                  }
 
                 var amount = $('#amount').val();
-                var amountCurrency = $('#amount-input-3').val();
+                var amountCurrency = $('#typeMoney').val();
                 var desc = $('#comments').val();
-                var invoice = $('#invoice-ieference').val();
+                var invoice = $('#invoiceIeference').val();
 
                 if($("#acct").val()=='' || $("#expdate").val()=='' || $("#cvv2").val()=='' || $("#fname").val()==''  || $("#lname").val()=='' || $("#amt").val()=='' ){
                     alert('All fields of payment are required.');
@@ -366,6 +364,7 @@
                 }
                 var creationResponse = createPayment(amount, desc, amountCurrency, invoice);
                 paymentId = creationResponse.response;
+                $("#payment_id").val(paymentId);
                 
             });
 
@@ -386,14 +385,14 @@
         }
 
         function validateInvoice(changing) {
-            var currentInvoice = $("#invoice-ieference").val();
+            var currentInvoice = $("#invoiceIeference").val();
             //between 5 and 20 characters
             var myRegxp = <%= GetLocalResourceObject("field_invoice_validation_regex") %>;
             if (myRegxp.test(currentInvoice) == false && !changing) {
-                addErrorInput("invoice-ieference", "<%= GetLocalResourceObject("field_invoice_error_label") %>");
+                addErrorInput("invoiceIeference", "<%= GetLocalResourceObject("field_invoice_error_label") %>");
                     return false;
                 } else {
-                    rmErrorInput("invoice-ieference");
+                    rmErrorInput("invoiceIeference");
                     return true;
                 }
             }
@@ -477,9 +476,9 @@
                     }
 
                     var amount = $('#amount').val();
-                    var amountCurrency = $('#amount-input-3').val();
+                    var amountCurrency = $('#typeMoney').val();
                     var desc = $('#comments').val();
-                    var invoice = $('#invoice-ieference').val();
+                    var invoice = $('#invoiceIeference').val();
 
                     // Make a call to the REST api to create the payment
                     var creationResponse = createPayment(amount, desc, amountCurrency, invoice);

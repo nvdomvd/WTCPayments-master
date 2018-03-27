@@ -12,6 +12,23 @@ public partial class index : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Session["msg"] != null)
+        {
+            if (!Session["msg"].Equals(""))
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "showMessage", "showMessage('" + Session["msg"] + "')", true);
+               
+            }
+            Session["msg"] = null;
+        }
+        if (Session["script"] != null)
+        {
+            if (!Session["script"].Equals(""))
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "validatePay", Session["script"].ToString(), true);
+                Session["script"] = "";
+            }
+        }
 
     }
 
@@ -46,17 +63,20 @@ public partial class index : System.Web.UI.Page
 
             if (dict["RESULT"] != "0")
             {
-
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "showMessage", "showMessage('The operation was not carried out.');", true);
+                
             }
             else
             {
-
+                Session["msg"] = "The operation was successful.";
+                //Session["script"] = "confirmPayment('"+ payment_id.Value + "','PayPalPro','"+ (payment_id.Value!=null && payment_id.Value!="" ? payment_id.Value : "no_reference") + "','"+ ConfigurationManager.AppSettings["StatusApprovedID"] +"')";               
+                Response.Redirect("index.aspx", true);
             }
 
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "showMessage", "showMessage('The operation was not carried out.')", true);
         }
         return "";
     }
@@ -67,7 +87,7 @@ public partial class index : System.Web.UI.Page
         {
             ConnectPayment("S", "C", cardtype.Items[cardtype.SelectedIndex].Value, acct.Value, expdate.Value, cvv2.Value, fname.Value, lname.Value, amount.Value);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
 
         }
